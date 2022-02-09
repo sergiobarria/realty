@@ -11,20 +11,17 @@ import {
   FormErrorMessage,
   InputGroup,
   InputLeftElement,
-  Input,
-  Button,
-  Divider,
   InputRightElement,
-  useToast,
-  Flex,
+  Input,
 } from '@chakra-ui/react';
+import { Button, Divider, useToast, Flex } from '@chakra-ui/react';
 import { Container, Heading, VStack, Text, Link } from '@chakra-ui/react';
 import { EmailIcon, LockIcon, ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
-import { FcGoogle } from 'react-icons/fc';
 import { FaUserAlt } from 'react-icons/fa';
 
 import { useAuth } from '@/hooks/useAuth';
 import { auth, db } from '@/firebase.config';
+import GoogleAuthBtn from '@/components/GoogleAuthBtn';
 
 import { registerSchema } from '@/utils/formSchemas';
 
@@ -37,7 +34,7 @@ interface RegisterFormInputs {
 export default function SignUpPage() {
   const [showPassword, setShowPassword] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string>('');
-  const { signUp } = useAuth();
+  const { signUp, googleSignIn } = useAuth();
   const navigate = useNavigate();
   const toast = useToast();
   const {
@@ -92,8 +89,6 @@ export default function SignUpPage() {
       setError('Those credentials are already in use.');
     }
   }
-
-  function registerWithGoogleHandler() {}
 
   return (
     <Container maxW='30rem' my='10'>
@@ -205,13 +200,7 @@ export default function SignUpPage() {
 
           <Divider />
 
-          <Button
-            leftIcon={<FcGoogle size='1.5rem' />}
-            textColor='gray.500'
-            onClick={registerWithGoogleHandler}
-          >
-            Log in with Google
-          </Button>
+          <GoogleAuthBtn />
         </VStack>
       </form>
       <Text mt='6'>

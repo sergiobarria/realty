@@ -10,7 +10,5 @@ export default function ProtectedRoute({
 }): JSX.Element {
   const { user } = useAuth();
 
-  console.log('Protected Route User: ', user);
-
   return user ? children : <Navigate to='/sign-in' />;
 }

@@ -6,18 +6,22 @@ export default function UserProfile() {
   const { user } = useAuth();
 
   return (
-    <Box>
-      <form>
-        <VStack spacing='24px' align='stretch'>
-          <Box>
-            <Text>Your Username: {user && user.displayName}</Text>
-          </Box>
+    <Box borderWidth='1px' borderRadius='lg' mt='4' p='3'>
+      <VStack spacing='24px' align='stretch'>
+        <Box>
+          <Text fontSize='sm' color='gray.500'>
+            Your Username:{' '}
+          </Text>
+          <Text textTransform='capitalize'>{user && user.displayName}</Text>
+        </Box>
 
-          <Box>
-            <Text as='p'>Your Email: {user && user.email}</Text>
-          </Box>
-        </VStack>
-      </form>
+        <Box>
+          <Text fontSize='sm' color='gray.500'>
+            Your Email:{' '}
+          </Text>
+          <Text>{user && user.email}</Text>
+        </Box>
+      </VStack>
     </Box>
   );
 }

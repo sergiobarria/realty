@@ -3,25 +3,19 @@ import * as React from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
+import { FormControl, FormLabel, FormErrorMessage } from '@chakra-ui/react';
 import {
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
   InputGroup,
   InputLeftElement,
   InputRightElement,
   Input,
-  Button,
-  Divider,
-  useToast,
-  Box,
-  Flex,
 } from '@chakra-ui/react';
+import { Button, Divider, useToast, Flex } from '@chakra-ui/react';
 import { Container, Heading, VStack, Text, Link } from '@chakra-ui/react';
 import { EmailIcon, LockIcon, ViewIcon } from '@chakra-ui/icons';
-import { FcGoogle } from 'react-icons/fc';
 
 import { useAuth } from '@/hooks/useAuth';
+import GoogleAuthBtn from '@/components/GoogleAuthBtn';
 
 import { signInFormSchema } from '@/utils/formSchemas';
 
@@ -77,115 +71,105 @@ export default function SignInPage() {
     }
   }
 
-  function signWithGoogleHandler() {}
-
   return (
-    <>
-      <Container maxW='30rem' my='10'>
-        <Heading as='h1' color='brand.primary' mb='2rem'>
-          Sign In
-        </Heading>
-        <form onSubmit={handleSubmit(submitHandler)}>
-          <VStack spacing='24px' align='stretch'>
-            {/* Email */}
-            <FormControl isInvalid={!!errors?.email}>
-              <FormLabel htmlFor='email' fontSize='sm'>
-                Email
-              </FormLabel>
-              <InputGroup>
-                <InputLeftElement
-                  pointerEvents='none'
-                  children={<EmailIcon color='gray.300' />}
-                />
-                <Input
-                  id='email'
-                  type='email'
-                  placeholder='Enter your email...'
-                  {...register('email')}
-                />
-              </InputGroup>
-              {errors?.email && (
-                <FormErrorMessage>{errors?.email.message}</FormErrorMessage>
-              )}
-            </FormControl>
+    <Container maxW='30rem' my='10'>
+      <Heading as='h1' color='brand.primary' mb='2rem'>
+        Sign In
+      </Heading>
+      <form onSubmit={handleSubmit(submitHandler)}>
+        <VStack spacing='24px' align='stretch'>
+          {/* Email */}
+          <FormControl isInvalid={!!errors?.email}>
+            <FormLabel htmlFor='email' fontSize='sm'>
+              Email
+            </FormLabel>
+            <InputGroup>
+              <InputLeftElement
+                pointerEvents='none'
+                children={<EmailIcon color='gray.300' />}
+              />
+              <Input
+                id='email'
+                type='email'
+                placeholder='Enter your email...'
+                {...register('email')}
+              />
+            </InputGroup>
+            {errors?.email && (
+              <FormErrorMessage>{errors?.email.message}</FormErrorMessage>
+            )}
+          </FormControl>
 
-            {/* Password */}
-            <FormControl isInvalid={!!errors?.password}>
-              <FormLabel htmlFor='password' fontSize='sm'>
-                Password
-              </FormLabel>
-              <InputGroup>
-                <InputLeftElement
-                  pointerEvents='none'
-                  children={<LockIcon color='gray.300' />}
-                />
-                <Input
-                  id='password'
-                  type={showPassword ? 'text' : 'password'}
-                  placeholder='Enter your password...'
-                  {...register('password')}
-                />
-                <InputRightElement>
-                  <Button bg='transparent' _hover={{ bg: 'transparent' }}>
-                    <ViewIcon
-                      color='gray.300'
-                      onClick={handleShowPassword}
-                      _hover={{ color: 'gray.600' }}
-                    />
-                  </Button>
-                </InputRightElement>
-              </InputGroup>
-              {errors?.password && (
-                <FormErrorMessage>{errors?.password.message}</FormErrorMessage>
-              )}
-            </FormControl>
+          {/* Password */}
+          <FormControl isInvalid={!!errors?.password}>
+            <FormLabel htmlFor='password' fontSize='sm'>
+              Password
+            </FormLabel>
+            <InputGroup>
+              <InputLeftElement
+                pointerEvents='none'
+                children={<LockIcon color='gray.300' />}
+              />
+              <Input
+                id='password'
+                type={showPassword ? 'text' : 'password'}
+                placeholder='Enter your password...'
+                {...register('password')}
+              />
+              <InputRightElement>
+                <Button bg='transparent' _hover={{ bg: 'transparent' }}>
+                  <ViewIcon
+                    color='gray.300'
+                    onClick={handleShowPassword}
+                    _hover={{ color: 'gray.600' }}
+                  />
+                </Button>
+              </InputRightElement>
+            </InputGroup>
+            {errors?.password && (
+              <FormErrorMessage>{errors?.password.message}</FormErrorMessage>
+            )}
+          </FormControl>
 
-            <Button
-              type='submit'
-              bg='brand.primary'
-              textColor='white'
-              fontSize='lg'
-              isLoading={isSubmitting}
-              _hover={{
-                textColor: 'brand.primary',
-                backgroundColor: 'gray.300',
-              }}
-            >
-              Sign In
-            </Button>
-            <Flex justifyContent='flex-end'>
-              <Button
-                variant='unstyled'
-                textColor='brand.accent'
-                onClick={() => navigate('/forgot-password')}
-              >
-                Forgot Password
-              </Button>
-            </Flex>
-            <Divider />
-            <Button
-              leftIcon={<FcGoogle size='1.5rem' />}
-              textColor='gray.500'
-              onClick={signWithGoogleHandler}
-            >
-              Log in with Google
-            </Button>
-          </VStack>
-        </form>
-        <Text mt='6'>
-          Don't have an account yet?{' '}
-          <Link
-            as={RouterLink}
-            to='/sign-up'
-            textColor='brand.primary'
-            fontWeight='600'
-            _hover={{ textColor: 'brand.accent' }}
+          <Button
+            type='submit'
+            bg='brand.primary'
+            textColor='white'
+            fontSize='lg'
+            isLoading={isSubmitting}
+            _hover={{
+              textColor: 'brand.primary',
+              backgroundColor: 'gray.300',
+            }}
           >
-            Sign Up
-          </Link>{' '}
-          instead.
-        </Text>
-      </Container>
-    </>
+            Sign In
+          </Button>
+          <Flex justifyContent='flex-end'>
+            <Button
+              variant='unstyled'
+              textColor='brand.accent'
+              onClick={() => navigate('/forgot-password')}
+            >
+              Forgot Password
+            </Button>
+          </Flex>
+          <Divider />
+          <GoogleAuthBtn />
+        </VStack>
+      </form>
+      <Text mt='6'>
+        Don't have an account yet?{' '}
+        <Link
+          as={RouterLink}
+          to='/sign-up'
+          textColor='brand.primary'
+          fontWeight='600'
+          _hover={{ textColor: 'brand.accent' }}
+        >
+          Sign Up
+        </Link>{' '}
+        instead.
+      </Text>
+    </Container>
   );
 }

@@ -16,3 +16,10 @@ export const registerSchema = yup.object().shape({
     .required('Email is required'),
   password: yup.string().required('Password is required'),
 });
+
+export const resetPasswordSchema = yup.object().shape({
+  email: yup
+    .string()
+    .email('Please add a valid email')
+    .required('Email is required'),
+});
