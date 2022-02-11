@@ -1,7 +1,8 @@
 import * as React from 'react';
 
-import { Divider, Grid, GridItem } from '@chakra-ui/react';
-import { Box, Heading, Flex, Text } from '@chakra-ui/react';
+import { Link as RouterLink } from 'react-router-dom';
+import { Button, Divider, Grid, GridItem } from '@chakra-ui/react';
+import { Box, Heading, Flex, Text, Link } from '@chakra-ui/react';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -25,14 +26,15 @@ export default function ProfilePage() {
             <Heading as='h3' fontSize='2xl' textColor='brand.primary'>
               USER PROFILE
             </Heading>
-            <Box
-              as='button'
+            <Button
+              size='sm'
+              bg='transparent'
               textColor='brand.accent'
               _hover={{ textColor: 'brand.primary' }}
               onClick={handleLogout}
             >
               Logout
-            </Box>
+            </Button>
           </Flex>
           <Divider my='2' />
           <Box>
@@ -40,9 +42,21 @@ export default function ProfilePage() {
           </Box>
         </GridItem>
         <GridItem colSpan={[3, 3, 2]}>
-          <Heading as='h3' fontSize='2xl' textColor='brand.primary'>
-            YOUR LISTINGS
-          </Heading>
+          <Flex alignItems='center' justifyContent='space-between'>
+            <Heading as='h3' fontSize='2xl' textColor='brand.primary'>
+              YOUR LISTINGS
+            </Heading>
+            <Link to='/create-listing' as={RouterLink}>
+              <Button
+                size='sm'
+                bg='brand.primary'
+                color='white'
+                _hover={{ color: 'brand.primary', bg: 'gray.300' }}
+              >
+                Add a New Listing
+              </Button>
+            </Link>
+          </Flex>
           <Divider my='2' />
           <Box>
             <Text>You have no listings yet...</Text>

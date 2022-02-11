@@ -1,12 +1,13 @@
 import React from 'react';
 
+import { useParams } from 'react-router-dom';
 import { query, where, orderBy, limit, collection } from 'firebase/firestore';
-import { Box, Spinner, Heading, useToast, Flex, Text } from '@chakra-ui/react';
+import { Box, Spinner, Heading, useToast, Flex } from '@chakra-ui/react';
 import { Center } from '@chakra-ui/react';
 
 import { useCollection } from '@/hooks/useCollection';
-import ListingCard from '@/components/ListingCard';
 import { Listing } from '@/utils/types';
+import ListingCard from '@/components/ListingCard';
 import { db } from '@/firebase.config';
 
 interface ListingObj {
@@ -14,11 +15,12 @@ interface ListingObj {
   data: Listing;
 }
 
-export default function OffersPage() {
+export default function CategoryPage() {
+  const params = useParams();
   const toast = useToast();
   const q = query(
     collection(db, 'listings'),
-    where('offer', '==', true),
+    where('type', '==', params?.categoryName),
     orderBy('timestamp', 'desc'),
     limit(10)
   );
@@ -36,13 +38,11 @@ export default function OffersPage() {
     }
   }, [error]);
 
-  console.log(data);
-
   return (
     <Box>
       <Box as='header' mb='8'>
         <Heading as='h1' color='brand.primary'>
-          Offers
+          {params?.categoryName! === 'for-rent' ? 'Places for Rent' : 'Places for Sale'}
         </Heading>
       </Box>
       {loading && (
@@ -54,14 +54,12 @@ export default function OffersPage() {
       )}
 
       {!loading && data?.length > 0 && (
-        <Flex flexWrap='wrap'>
+        <Flex flexWrap='wrap' gap={6}>
           {data.map((listing: ListingObj) => (
             <ListingCard key={listing.id} listing={listing.data} id={listing.id} />
           ))}
         </Flex>
       )}
-
-      {!loading && data?.length === 0 && <Text>There are no current offers...</Text>}
     </Box>
   );
 }

@@ -34,7 +34,7 @@ interface RegisterFormInputs {
 export default function SignUpPage() {
   const [showPassword, setShowPassword] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string>('');
-  const { signUp, googleSignIn } = useAuth();
+  const { signUp } = useAuth();
   const navigate = useNavigate();
   const toast = useToast();
   const {
@@ -107,15 +107,9 @@ export default function SignUpPage() {
                 pointerEvents='none'
                 children={<FaUserAlt style={{ color: '#CBD5E0' }} />}
               />
-              <Input
-                type='text'
-                placeholder='Enter your email...'
-                {...register('name')}
-              />
+              <Input type='text' placeholder='Enter your name...' {...register('name')} />
             </InputGroup>
-            {errors?.name && (
-              <FormErrorMessage>{errors?.name.message}</FormErrorMessage>
-            )}
+            {errors?.name && <FormErrorMessage>{errors?.name.message}</FormErrorMessage>}
           </FormControl>
 
           {/* Email */}
@@ -124,19 +118,10 @@ export default function SignUpPage() {
               Email
             </FormLabel>
             <InputGroup>
-              <InputLeftElement
-                pointerEvents='none'
-                children={<EmailIcon color='gray.300' />}
-              />
-              <Input
-                type='email'
-                placeholder='Enter your email...'
-                {...register('email')}
-              />
+              <InputLeftElement pointerEvents='none' children={<EmailIcon color='gray.300' />} />
+              <Input type='email' placeholder='Enter your email...' {...register('email')} />
             </InputGroup>
-            {errors?.email && (
-              <FormErrorMessage>{errors?.email.message}</FormErrorMessage>
-            )}
+            {errors?.email && <FormErrorMessage>{errors?.email.message}</FormErrorMessage>}
           </FormControl>
 
           {/* Password */}
@@ -145,10 +130,7 @@ export default function SignUpPage() {
               Password
             </FormLabel>
             <InputGroup>
-              <InputLeftElement
-                pointerEvents='none'
-                children={<LockIcon color='gray.300' />}
-              />
+              <InputLeftElement pointerEvents='none' children={<LockIcon color='gray.300' />} />
               <Input
                 type={showPassword ? 'text' : 'password'}
                 placeholder='Enter your password...'
@@ -172,9 +154,7 @@ export default function SignUpPage() {
                 </Button>
               </InputRightElement>
             </InputGroup>
-            {errors?.password && (
-              <FormErrorMessage>{errors?.password.message}</FormErrorMessage>
-            )}
+            {errors?.password && <FormErrorMessage>{errors?.password.message}</FormErrorMessage>}
           </FormControl>
 
           <Button
