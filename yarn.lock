@@ -1423,6 +1423,11 @@
     prop-types "^15.7.2"
     tslib "^2.1.0"
 
+"@react-leaflet/core@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@react-leaflet/core/-/core-1.1.1.tgz#827fd05bb542cf874116176d8ef48d5b12163f81"
+  integrity sha512-7PGLWa9MZ5x/cWy8EH2VzI4T8q5WpuHbixzCDXqixP/WyqwIrg5NDUPgYuFnB4IEIZF+6nA265mYzswFo/h1Pw==
+
 "@rollup/pluginutils@^4.1.2":
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/@rollup/pluginutils/-/pluginutils-4.1.2.tgz#ed5821c15e5e05e32816f5fb9ec607cdf5a75751"
@@ -1716,6 +1721,13 @@ detect-node-es@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/detect-node-es/-/detect-node-es-1.1.0.tgz#163acdf643330caa0b4cd7c21e7ee7755d6fa493"
   integrity sha512-ypdmJU/TbBby2Dxibuv7ZLW3Bs1QEmM7nHjEANfohJLvE0XVujisn1qPJcZxg+qDucsr+bP6fLD1rPS3AhJ7EQ==
+
+dom7@^4.0.4:
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/dom7/-/dom7-4.0.4.tgz#8b68c5d8e5e2ed0fddb1cb93e433bc9060c8f3fb"
+  integrity sha512-DSSgBzQ4rJWQp1u6o+3FVwMNnT5bzQbMb+o31TjYYeRi05uAcpF8koxdfzeoe5ElzPmua7W7N28YJhF7iEKqIw==
+  dependencies:
+    ssr-window "^4.0.0"
 
 electron-to-chromium@^1.4.17:
   version "1.4.65"
@@ -2139,6 +2151,11 @@ jszip@^3.6.0:
     readable-stream "~2.3.6"
     set-immediate-shim "~1.0.1"
 
+leaflet@^1.7.1:
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.7.1.tgz#10d684916edfe1bf41d688a3b97127c0322a2a19"
+  integrity sha512-/xwPEBidtg69Q3HlqPdU3DnrXQOvQU/CCHA1tcDQVzOwm91YMYaILjNp7L4Eaw5Z4sOYdbBz6koWyibppd8Zqw==
+
 lie@~3.3.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/lie/-/lie-3.3.0.tgz#dcf82dee545f46074daf200c7c1c5a08e0f40f6a"
@@ -2403,6 +2420,13 @@ react-is@^16.13.1, react-is@^16.7.0:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
+react-leaflet@^3.2.5:
+  version "3.2.5"
+  resolved "https://registry.yarnpkg.com/react-leaflet/-/react-leaflet-3.2.5.tgz#bec0bfab9dd8c2b030ea630f7a0687a60322ca7d"
+  integrity sha512-Z3KZ+4SijsRbbrt2I1a3ZDY6+V6Pm91eYTdxTN18G6IOkFRsJo1BuSPLFnyFrlF3WDjQFPEcTPkEgD1VEeAoBg==
+  dependencies:
+    "@react-leaflet/core" "^1.1.1"
+
 react-merge-refs@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/react-merge-refs/-/react-merge-refs-1.1.0.tgz#73d88b892c6c68cbb7a66e0800faa374f4c38b06"
@@ -2594,6 +2618,11 @@ source-map@^0.5.0, source-map@^0.5.7:
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.5.7.tgz#8a039d2d1021d22d1ea14c80d8ea468ba2ef3fcc"
   integrity sha1-igOdLRAh0i0eoUyA2OpGi6LvP8w=
 
+ssr-window@^4.0.0, ssr-window@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/ssr-window/-/ssr-window-4.0.2.tgz#dc6b3ee37be86ac0e3ddc60030f7b3bc9b8553be"
+  integrity sha512-ISv/Ch+ig7SOtw7G2+qkwfVASzazUnvlDTwypdLoPoySv+6MqlOV10VwPSE6EWkGjhW50lUmghPmpYZXMu/+AQ==
+
 string-width@^4.1.0, string-width@^4.2.0:
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/string-width/-/string-width-4.2.3.tgz#269c7117d27b05ad2e536830a8ec895ef9c6d010"
@@ -2646,6 +2675,14 @@ supports-preserve-symlinks-flag@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz#6eda4bd344a3c94aea376d4cc31bc77311039e09"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
+
+swiper@^8.0.5:
+  version "8.0.5"
+  resolved "https://registry.yarnpkg.com/swiper/-/swiper-8.0.5.tgz#3afd16319db118fb5d664f127f10e80e7aa8de9b"
+  integrity sha512-g2YQY9uzhvPPWw/UhH/q8PHOx+cakZrfwwAHyxj1EV6ovlVc3Wy321da9/c71UIP/shBtYOLfzP5L3At567h5w==
+  dependencies:
+    dom7 "^4.0.4"
+    ssr-window "^4.0.2"
 
 tiny-invariant@^1.0.6:
   version "1.2.0"
