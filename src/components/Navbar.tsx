@@ -15,12 +15,7 @@ export default function Navbar() {
     <Container as='header' h='5rem' maxW='container.lg'>
       <Flex h='full' alignItems='center' justifyContent='space-between'>
         <Link as={RouterLink} to='/'>
-          <img
-            src='/images/logo.svg'
-            width={125}
-            height={75}
-            alt='company logo'
-          />
+          <img src='/images/logo.svg' width={125} height={75} alt='company logo' />
         </Link>
         <HStack as='nav' display={['none', 'none', 'block']} spacing='2rem'>
           <NavLink route='/'>Explore</NavLink>
@@ -28,10 +23,10 @@ export default function Navbar() {
           <NavLink route='/profile'>Profile</NavLink>
           {!user && (
             <Button
-              bg='brand.primary'
+              bg='primary'
               textColor='white'
               size='sm'
-              _hover={{ bg: 'gray.300', textColor: 'brand.primary' }}
+              _hover={{ bg: 'gray.900', textColor: 'primary' }}
               onClick={() => navigate('/sign-in')}
             >
               Sign In

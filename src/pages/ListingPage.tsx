@@ -1,57 +1,43 @@
-import React from 'react';
+import * as React from 'react';
 
-import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
-import { getDoc, doc, DocumentData } from 'firebase/firestore';
+import { Link as RouterLink, useParams } from 'react-router-dom';
 import { Box, Text, Link, Spinner, useToast, Center } from '@chakra-ui/react';
 import { Heading, Divider, UnorderedList, ListItem, Badge, Button } from '@chakra-ui/react';
 
+import { useActions } from '@/hooks/useActions';
+import { useAppSelector } from '@/hooks/useAppSelector';
 import SlideShow from '@/components/SlideShow';
 import ShareButton from '@/components/ShareButton';
 import Map from '@/components/Map';
 
-import { auth, db } from '@/firebase.config';
+import { auth } from '@/firebase.config';
 
 export default function ListingPage() {
-  const [listing, setListing] = React.useState<DocumentData | null>(null);
-  const [loading, setLoading] = React.useState<boolean>(false);
-  const [error, setError] = React.useState<string>('');
+  const {
+    listingActions: { fetchSingleListing },
+  } = useActions();
+  const { listing, isLoading, isError, errorMessage } = useAppSelector((state) => state.listing);
 
-  const navigate = useNavigate();
   const params = useParams();
   const toast = useToast();
 
   React.useEffect(() => {
-    if (error) {
+    if (isError) {
       toast({
         title: 'Oops!, Something went wrong!',
-        description: error,
+        description: errorMessage,
         status: 'error',
       });
     }
-  }, [error]);
+  }, [isError]);
 
   React.useEffect(() => {
-    setLoading(true);
-    setError('');
-    const fetchListing = async () => {
-      const docRef = doc(db, 'listings', params.listingId!);
-      const docSnapshot = await getDoc(docRef);
+    if (params?.listingId) {
+      fetchSingleListing(params?.listingId);
+    }
+  }, [params?.listingId]);
 
-      if (!docSnapshot.exists()) {
-        setError('There was an error fetching property details, please try again later');
-      }
-
-      if (docSnapshot.exists()) {
-        console.log(docSnapshot.data());
-        setListing(docSnapshot.data());
-        setLoading(false);
-      }
-    };
-
-    fetchListing();
-  }, [navigate, params.listingId]);
-
-  if (loading) {
+  if (isLoading) {
     return (
       <Center h='20rem'>
         <Spinner size='lg' />
@@ -70,14 +56,14 @@ export default function ListingPage() {
       )}
 
       {/* Property Details */}
-      {!loading && listing && (
+      {!isLoading && listing && (
         <Box>
           <Heading as='h2'>
             {listing.name} -{' '}
             <Box as='span' color='brand.accent'>
               $
               {listing.offer
-                ? listing.discountedPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                ? listing?.discountedPrice?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
                 : listing.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
             </Box>
           </Heading>
@@ -86,7 +72,9 @@ export default function ListingPage() {
           </Heading>
           <Badge colorScheme='green'>{listing.type}</Badge>
           <Badge colorScheme='purple'>{listing.offer && listing.offer}</Badge>
-          <Badge>${listing.offer ? listing.price - listing.discountedPrice : null} Discount</Badge>
+          <Badge>
+            ${listing.offer ? listing.price - listing?.discountedPrice! : null} Discount
+          </Badge>
           <Divider my={4} />
 
           {/* Details */}
@@ -118,7 +106,9 @@ export default function ListingPage() {
             Location
           </Heading>
           <Box h='20rem'>
-            <Map geolocation={listing.geolocation} location={listing.location} />
+            {listing.geolocation && (
+              <Map geolocation={listing.geolocation} location={listing.location} />
+            )}
           </Box>
 
           {/* Contact Owner */}

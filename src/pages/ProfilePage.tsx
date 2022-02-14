@@ -18,15 +18,14 @@ import { Box, Heading, Flex, Text, Link } from '@chakra-ui/react';
 
 import { useNavigate } from 'react-router-dom';
 
-import { useAuth } from '@/hooks/useAuth';
+import { useActions } from '@/hooks/useActions';
 import UserProfile from '@/components/UserProfile';
 import { auth, db } from '@/firebase.config';
-import { Listing } from '@/utils/types';
 
 export default function ProfilePage() {
+  const { authActions } = useActions();
   const [listings, setListings] = React.useState<{ id: string; data: DocumentData }[]>();
   const [loading, setLoading] = React.useState<boolean>(false);
-  const { logout } = useAuth();
   const navigate = useNavigate();
 
   React.useEffect(() => {
@@ -59,7 +58,7 @@ export default function ProfilePage() {
   }, [auth.currentUser?.uid]);
 
   const handleLogout = async () => {
-    await logout();
+    authActions.logout();
     navigate('/', { replace: true });
   };
 
@@ -74,8 +73,8 @@ export default function ProfilePage() {
             <Button
               size='sm'
               bg='transparent'
-              textColor='brand.accent'
-              _hover={{ textColor: 'brand.primary' }}
+              textColor='red.500'
+              _hover={{ textColor: 'primary' }}
               onClick={handleLogout}
             >
               Logout
@@ -106,7 +105,9 @@ export default function ProfilePage() {
           <Box>
             {!loading && !listings && <Text>You have no listings yet...</Text>}
 
-            {!loading && listings && listings.map((listing) => <p>{listing.data.name}</p>)}
+            {!loading &&
+              listings &&
+              listings.map((listing) => <p key={listing.id}>{listing.data.name}</p>)}
           </Box>
         </GridItem>
       </Grid>

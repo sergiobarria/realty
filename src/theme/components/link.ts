@@ -1,21 +1,17 @@
 const link = {
   baseStyle: {
-    // color: "brand.primary",
-    // textTransform: "uppercase",
-    // fontWeight: 600,
     _hover: {
-      textDecoration: "none",
-      // color: "brand.accent",
+      textDecoration: 'none',
     },
   },
   variants: {
     navLink: {
-      color: "brand.primary",
-      textTransform: "uppercase",
+      color: 'gray.700',
+      textTransform: 'uppercase',
       fontWeight: 600,
       _hover: {
-        textDecoration: "none",
-        color: "brand.accent",
+        textDecoration: 'none',
+        color: 'primary',
       },
     },
   },
