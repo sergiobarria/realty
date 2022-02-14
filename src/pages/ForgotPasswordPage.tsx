@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import {
@@ -17,12 +17,14 @@ import {
 import { Container, Heading } from '@chakra-ui/react';
 import { EmailIcon } from '@chakra-ui/icons';
 
-import { useAuth } from '@/hooks/useAuth';
+import { useActions } from '@/hooks/useActions';
+import { useAppSelector } from '@/hooks/useAppSelector';
 import { resetPasswordSchema } from '@/utils/formSchemas';
+import CustomButton from '@/components/CustomButton';
 
 export default function ForgotPasswordPage() {
-  const [error, setError] = React.useState<string>('');
-  const { passwordReset } = useAuth();
+  const { authActions } = useActions();
+  const { isError, errorMessage } = useAppSelector((state) => state.auth);
   const navigate = useNavigate();
   const toast = useToast();
   const {
@@ -36,37 +38,28 @@ export default function ForgotPasswordPage() {
   });
 
   React.useEffect(() => {
-    if (error) {
+    if (isError) {
       toast({
         title: 'Oops!, Something went wrong!',
-        description: error,
+        description: errorMessage,
         status: 'error',
-        duration: 5000,
-        isClosable: true,
       });
-      reset();
     }
-  }, [error]);
+  }, [isError]);
 
-  async function resetPasswordHandler(formData: { email: string }) {
+  function resetPasswordHandler(formData: { email: string }) {
     const { email } = formData;
 
-    try {
-      await passwordReset(email);
-      toast({
-        title: 'Email sent!',
-        description:
-          'An email was sent to your registered email, follow the instructions to reset your password',
-        status: 'success',
-        // duration: 5000,
-        // isClosable: true,
-      });
-    } catch (error) {
-      setError(
-        'There was an error sending the reset email, please try again later.'
-      );
-    }
+    authActions.resetPassword(email);
+
+    toast({
+      title: 'Email sent!',
+      description:
+        'An email was sent to your registered email, follow the instructions to reset your password',
+      status: 'success',
+    });
     reset();
+    navigate('/', { replace: true });
   }
 
   return (
@@ -82,31 +75,13 @@ export default function ForgotPasswordPage() {
               Email
             </FormLabel>
             <InputGroup>
-              <InputLeftElement
-                pointerEvents='none'
-                children={<EmailIcon color='gray.300' />}
-              />
-              <Input
-                type='email'
-                placeholder='Enter your email...'
-                {...register('email')}
-              />
+              <InputLeftElement pointerEvents='none' children={<EmailIcon color='gray.300' />} />
+              <Input type='email' placeholder='Enter your email...' {...register('email')} />
             </InputGroup>
-            {errors?.email && (
-              <FormErrorMessage>{errors?.email.message}</FormErrorMessage>
-            )}
+            {errors?.email && <FormErrorMessage>{errors?.email.message}</FormErrorMessage>}
           </FormControl>
 
-          <Button
-            type='submit'
-            bg='brand.primary'
-            textColor='white'
-            fontSize='lg'
-            isLoading={isSubmitting}
-            _hover={{ textColor: 'brand.primary', backgroundColor: 'gray.300' }}
-          >
-            Send Reset Link
-          </Button>
+          <CustomButton isLoading={isSubmitting}>Send Reset Link</CustomButton>
         </VStack>
       </form>
     </Container>

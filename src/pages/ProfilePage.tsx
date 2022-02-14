@@ -1,20 +1,64 @@
 import * as React from 'react';
 
 import { Link as RouterLink } from 'react-router-dom';
+import {
+  updateDoc,
+  doc,
+  collection,
+  getDocs,
+  query,
+  where,
+  orderBy,
+  deleteDoc,
+  DocumentData,
+  QueryDocumentSnapshot,
+} from 'firebase/firestore';
 import { Button, Divider, Grid, GridItem } from '@chakra-ui/react';
 import { Box, Heading, Flex, Text, Link } from '@chakra-ui/react';
 
 import { useNavigate } from 'react-router-dom';
 
-import { useAuth } from '@/hooks/useAuth';
+import { useActions } from '@/hooks/useActions';
 import UserProfile from '@/components/UserProfile';
+import { auth, db } from '@/firebase.config';
 
 export default function ProfilePage() {
-  const { logout } = useAuth();
+  const { authActions } = useActions();
+  const [listings, setListings] = React.useState<{ id: string; data: DocumentData }[]>();
+  const [loading, setLoading] = React.useState<boolean>(false);
   const navigate = useNavigate();
 
+  React.useEffect(() => {
+    setLoading(true);
+    const fetchUserListings = async () => {
+      const listingRef = collection(db, 'listings');
+
+      const q = query(
+        listingRef,
+        where('userRef', '==', auth.currentUser?.uid),
+        orderBy('timestamp', 'desc')
+      );
+
+      const querySnapshot = await getDocs(q);
+
+      let listings: { id: string; data: DocumentData }[] = [];
+
+      querySnapshot.forEach((doc) => {
+        return listings.push({
+          id: doc.id,
+          data: doc.data(),
+        });
+      });
+
+      setListings(listings);
+      setLoading(false);
+    };
+
+    fetchUserListings();
+  }, [auth.currentUser?.uid]);
+
   const handleLogout = async () => {
-    await logout();
+    authActions.logout();
     navigate('/', { replace: true });
   };
 
@@ -29,8 +73,8 @@ export default function ProfilePage() {
             <Button
               size='sm'
               bg='transparent'
-              textColor='brand.accent'
-              _hover={{ textColor: 'brand.primary' }}
+              textColor='red.500'
+              _hover={{ textColor: 'primary' }}
               onClick={handleLogout}
             >
               Logout
@@ -59,7 +103,11 @@ export default function ProfilePage() {
           </Flex>
           <Divider my='2' />
           <Box>
-            <Text>You have no listings yet...</Text>
+            {!loading && !listings && <Text>You have no listings yet...</Text>}
+
+            {!loading &&
+              listings &&
+              listings.map((listing) => <p key={listing.id}>{listing.data.name}</p>)}
           </Box>
         </GridItem>
       </Grid>

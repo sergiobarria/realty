@@ -1,14 +1,13 @@
 import React from 'react';
 
 import { useParams } from 'react-router-dom';
-import { query, where, orderBy, limit, collection } from 'firebase/firestore';
 import { Box, Spinner, Heading, useToast, Flex } from '@chakra-ui/react';
 import { Center } from '@chakra-ui/react';
 
-import { useCollection } from '@/hooks/useCollection';
+import { useActions } from '@/hooks/useActions';
+import { useAppSelector } from '@/hooks/useAppSelector';
 import { Listing } from '@/utils/types';
 import ListingCard from '@/components/ListingCard';
-import { db } from '@/firebase.config';
 
 interface ListingObj {
   id: string;
@@ -18,25 +17,26 @@ interface ListingObj {
 export default function CategoryPage() {
   const params = useParams();
   const toast = useToast();
-  const q = query(
-    collection(db, 'listings'),
-    where('type', '==', params?.categoryName),
-    orderBy('timestamp', 'desc'),
-    limit(10)
-  );
-  const { data, loading, error } = useCollection(q);
+  const {
+    listingActions: { fetchListings },
+  } = useActions();
+  const { listings, isLoading, isError } = useAppSelector((state) => state.listing);
 
   React.useEffect(() => {
-    if (error) {
+    if (params?.categoryName) {
+      fetchListings(params?.categoryName);
+    }
+  }, [params?.categoryName]);
+
+  React.useEffect(() => {
+    if (isError) {
       toast({
         title: 'Oops!, Something went wrong!',
         description: 'There was an error fetching listings. Please try again later.',
         status: 'error',
-        duration: 5000,
-        isClosable: true,
       });
     }
-  }, [error]);
+  }, [isError]);
 
   return (
     <Box>
@@ -45,20 +45,24 @@ export default function CategoryPage() {
           {params?.categoryName! === 'for-rent' ? 'Places for Rent' : 'Places for Sale'}
         </Heading>
       </Box>
-      {loading && (
+      {isLoading && (
         <Box h='10rem'>
           <Center h='full'>
-            <Spinner size='xl' />
+            <Spinner size='xl' color='primary' />
           </Center>
         </Box>
       )}
 
-      {!loading && data?.length > 0 && (
+      {!isLoading && listings?.length > 0 && (
         <Flex flexWrap='wrap' gap={6}>
-          {data.map((listing: ListingObj) => (
-            <ListingCard key={listing.id} listing={listing.data} id={listing.id} />
+          {listings.map((listing: Listing) => (
+            <ListingCard key={listing.uid} listing={listing} id={listing.uid} />
           ))}
         </Flex>
+      )}
+
+      {!isLoading && listings?.length === 0 && (
+        <Heading as='h3'>There are not available listings for sale</Heading>
       )}
     </Box>
   );

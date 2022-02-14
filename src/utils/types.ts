@@ -3,7 +3,6 @@ import { Timestamp } from 'firebase/firestore';
 export type Listing = {
   uid: string;
   description: string;
-  // slug: string;
   name: string;
   area: number;
   userRef: string;
