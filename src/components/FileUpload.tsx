@@ -1,49 +1,34 @@
 import React from 'react';
-import { Box, Button, Flex, HStack, InputGroup } from '@chakra-ui/react';
-import { UseFormRegisterReturn } from 'react-hook-form';
-import { SmallCloseIcon } from '@chakra-ui/icons';
 
-interface FileUploadProps {
-  register: UseFormRegisterReturn;
+import { useField, useFormikContext } from 'formik';
+import { Box, Button, Flex, HStack, InputGroup } from '@chakra-ui/react';
+// import { UseFormRegisterReturn } from 'react-hook-form';
+import { BaseProps } from '@/types/FormTypes';
+
+type FileUploadProps = BaseProps & {
   accept?: string;
   multiple?: boolean;
-  children?: React.ReactNode;
-}
+  // children?: React.ReactNode;
+};
 
-export default function FileUpload({ register, accept, multiple, children }: FileUploadProps) {
-  // const [images, setImages] = React.useState<FileList | null>();
-  const inputRef = React.useRef<HTMLInputElement | null>(null);
-  const { ref, ...rest } = register as { ref: (instance: HTMLInputElement | null) => void };
-
-  const handleClick = () => inputRef.current?.click();
-
-  // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setImages(e.target.files);
-  // };
+const FileUpload: React.FC<FileUploadProps> = (props: FileUploadProps) => {
+  const { name, accept, multiple } = props;
+  const { setFieldValue } = useFormikContext();
+  const [field] = useField(name);
+  const { value, ...rest } = field;
 
   return (
-    <InputGroup onClick={handleClick}>
+    <InputGroup>
       <input
+        {...rest}
         type='file'
         multiple={multiple || false}
-        hidden
         max='6'
         accept={accept}
-        {...rest}
-        ref={(e) => {
-          ref(e);
-          inputRef.current = e;
-        }}
-        // onChange={handleChange}
+        onChange={(e) => setFieldValue(field.name, e.currentTarget.files)}
       />
-      <HStack spacing={8}>
-        <Box>{children}</Box>
-        {/* <Box fontSize='sm'>
-          {images &&
-            images?.length > 0 &&
-            [...images].map((image) => <p key={image.name}>{image.name}</p>)}
-        </Box> */}
-      </HStack>
     </InputGroup>
   );
-}
+};
+
+export default FileUpload;

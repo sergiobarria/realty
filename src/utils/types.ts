@@ -1,24 +1,24 @@
 import { Timestamp } from 'firebase/firestore';
 
 export type Listing = {
-  uid: string;
-  description: string;
+  uid?: string;
+  userRef: string | null;
+  type: 'for-sale' | 'for-rent';
   name: string;
-  area: number;
-  userRef: string;
-  timestamp?: Timestamp;
-  price: number;
-  offer: boolean;
-  parking: boolean;
-  discountedPrice?: number;
-  bathrooms: number;
   bedrooms: number;
+  bathrooms: number;
+  area: number;
+  parking: number;
   furnished: boolean;
+  location: string;
   geolocation?: {
     lat: number;
     lng: number;
   };
+  description: string;
+  price: number;
+  offer: boolean;
+  discountedPrice?: number;
   imgUrls: string[];
-  location: string;
-  type: string;
+  timestamp?: Timestamp;
 };

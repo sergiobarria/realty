@@ -1,7 +1,11 @@
-import { db } from '@/firebase.config';
-import { Listing } from '@/utils/types';
+import { auth, db } from '@/firebase.config';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { query, where, orderBy, limit, collection, getDocs, doc, getDoc } from 'firebase/firestore';
+import { query, where, orderBy, limit } from 'firebase/firestore';
+import { collection, getDocs, doc, getDoc, addDoc } from 'firebase/firestore';
+
+import { storeImage } from '@/utils/storeImage';
+import { Listing } from '@/utils/types';
+import { ListingFormInputs } from '@/types/FormTypes';
 
 export const fetchListings = createAsyncThunk(
   'listing/fetchListingsByCategory',
@@ -56,6 +60,35 @@ export const fetchSingleListing = createAsyncThunk(
       };
 
       return listing;
+    } catch (error: any) {
+      console.error('Error', error.message);
+      return thunkAPI.rejectWithValue(error.message as string);
+    }
+  }
+);
+
+export const createListing = createAsyncThunk(
+  'listings/createListing',
+  async (data: ListingFormInputs, thunkAPI) => {
+    try {
+      // Store images in Firestore
+      const uploadedImgs = await Promise.all(
+        [...data.imgUrls].map((image: string) => storeImage(image))
+      ).catch((error: any) => {
+        console.error(error);
+        return thunkAPI.rejectWithValue('Unable to upload images');
+      });
+
+      // create new listing
+      const listing: Listing = {
+        ...data,
+        imgUrls: uploadedImgs ? (uploadedImgs as string[]) : [],
+        userRef: auth.currentUser?.uid || null,
+      };
+
+      const docRef = await addDoc(collection(db, 'listings'), listing);
+
+      return docRef.id;
     } catch (error: any) {
       console.error('Error', error.message);
       return thunkAPI.rejectWithValue(error.message as string);

@@ -93,9 +93,9 @@ export default function ProfilePage() {
             <Link to='/create-listing' as={RouterLink}>
               <Button
                 size='sm'
-                bg='brand.primary'
+                bg='primary'
                 color='white'
-                _hover={{ color: 'brand.primary', bg: 'gray.300' }}
+                _hover={{ color: 'primary', bg: 'gray.900' }}
               >
                 Add a New Listing
               </Button>
