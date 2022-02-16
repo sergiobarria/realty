@@ -1,41 +1,22 @@
 import React from 'react';
 
 import { useNavigate } from 'react-router-dom';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
-import {
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-  InputGroup,
-  InputLeftElement,
-  Input,
-  Button,
-  useToast,
-  VStack,
-} from '@chakra-ui/react';
+import { Formik, Form } from 'formik';
+import { useToast, VStack } from '@chakra-ui/react';
 import { Container, Heading } from '@chakra-ui/react';
-import { EmailIcon } from '@chakra-ui/icons';
 
 import { useActions } from '@/hooks/useActions';
 import { useAppSelector } from '@/hooks/useAppSelector';
 import { resetPasswordSchema } from '@/utils/formSchemas';
-import CustomButton from '@/components/CustomButton';
+import InputField from '@/components/InputField';
+import SubmitButton from '@/components/SubmitButton';
 
 export default function ForgotPasswordPage() {
   const { authActions } = useActions();
+  const { isLoading } = useAppSelector((state) => state.auth);
   const { isError, errorMessage } = useAppSelector((state) => state.auth);
   const navigate = useNavigate();
   const toast = useToast();
-  const {
-    reset,
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<{ email: string }>({
-    mode: 'onBlur',
-    resolver: yupResolver(resetPasswordSchema),
-  });
 
   React.useEffect(() => {
     if (isError) {
@@ -58,8 +39,10 @@ export default function ForgotPasswordPage() {
         'An email was sent to your registered email, follow the instructions to reset your password',
       status: 'success',
     });
-    reset();
-    navigate('/', { replace: true });
+
+    setTimeout(() => {
+      navigate('/', { replace: true });
+    }, 2000);
   }
 
   return (
@@ -67,23 +50,18 @@ export default function ForgotPasswordPage() {
       <Heading as='h1' color='brand.primary' mb='2rem'>
         Reset Password
       </Heading>
-      <form onSubmit={handleSubmit(resetPasswordHandler)}>
-        <VStack spacing='24px' align='stretch'>
-          {/* Email */}
-          <FormControl isInvalid={!!errors?.email}>
-            <FormLabel htmlFor='email' fontSize='sm'>
-              Email
-            </FormLabel>
-            <InputGroup>
-              <InputLeftElement pointerEvents='none' children={<EmailIcon color='gray.300' />} />
-              <Input type='email' placeholder='Enter your email...' {...register('email')} />
-            </InputGroup>
-            {errors?.email && <FormErrorMessage>{errors?.email.message}</FormErrorMessage>}
-          </FormControl>
-
-          <CustomButton isLoading={isSubmitting}>Send Reset Link</CustomButton>
-        </VStack>
-      </form>
+      <Formik
+        initialValues={{ email: '' }}
+        onSubmit={resetPasswordHandler}
+        validationSchema={resetPasswordSchema}
+      >
+        <Form>
+          <VStack spacing={6} align='stretch'>
+            <InputField name='email' label='Email' placeholder='Enter your email' />
+            <SubmitButton isLoading={isLoading}>Send Reset Link</SubmitButton>
+          </VStack>
+        </Form>
+      </Formik>
     </Container>
   );
 }
