@@ -5,7 +5,7 @@ import { Box, Flex, HStack, Image, Link, StackDivider, Text } from '@chakra-ui/r
 import { FaBed, FaBath } from 'react-icons/fa';
 import { MdSquareFoot } from 'react-icons/md';
 
-import { Listing } from '@/utils/types';
+import { Listing } from '@/types/types';
 
 interface ListingCardProps {
   // id: string;

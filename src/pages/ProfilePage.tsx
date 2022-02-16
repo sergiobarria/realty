@@ -1,18 +1,7 @@
 import * as React from 'react';
 
 import { Link as RouterLink } from 'react-router-dom';
-import {
-  updateDoc,
-  doc,
-  collection,
-  getDocs,
-  query,
-  where,
-  orderBy,
-  deleteDoc,
-  DocumentData,
-  QueryDocumentSnapshot,
-} from 'firebase/firestore';
+import { collection, getDocs, query, where, orderBy, DocumentData } from 'firebase/firestore';
 import { Button, Divider, Grid, GridItem } from '@chakra-ui/react';
 import { Box, Heading, Flex, Text, Link } from '@chakra-ui/react';
 

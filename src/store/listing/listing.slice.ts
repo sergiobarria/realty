@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { Listing } from '@/utils/types';
+import { Listing } from '@/types/types';
 import { fetchSingleListing, fetchListings, createListing } from './listing.actions';
 
 interface ListingsState {

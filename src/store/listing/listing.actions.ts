@@ -4,7 +4,7 @@ import { query, where, orderBy, limit } from 'firebase/firestore';
 import { collection, getDocs, doc, getDoc, addDoc } from 'firebase/firestore';
 
 import { storeImage } from '@/utils/storeImage';
-import { Listing } from '@/utils/types';
+import { Listing } from '@/types/types';
 import { ListingFormInputs } from '@/types/FormTypes';
 
 export const fetchListings = createAsyncThunk(

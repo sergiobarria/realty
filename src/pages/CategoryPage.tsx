@@ -6,7 +6,7 @@ import { Center } from '@chakra-ui/react';
 
 import { useActions } from '@/hooks/useActions';
 import { useAppSelector } from '@/hooks/useAppSelector';
-import { Listing } from '@/utils/types';
+import { Listing } from '@/types/types';
 import ListingCard from '@/components/ListingCard';
 
 export default function CategoryPage() {

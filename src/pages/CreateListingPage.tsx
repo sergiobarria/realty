@@ -58,7 +58,7 @@ export default function CreateListingPage() {
       <Formik
         initialValues={initialValues}
         onSubmit={addListingHandler}
-        // validationSchema={creatListingFormSchema}
+        validationSchema={creatListingFormSchema}
       >
         <AddListingForm />
       </Formik>

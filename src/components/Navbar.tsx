@@ -5,11 +5,11 @@ import { Box, Button, Container, Flex, HStack, Link } from '@chakra-ui/react';
 
 import Drawer from '@/components/Drawer';
 import NavLink from '@/components/NavLink';
-import { useAuth } from '@/hooks/useAuth';
+import { useAppSelector } from '@/hooks/useAppSelector';
 
 export default function Navbar() {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user } = useAppSelector((state) => state.auth);
 
   return (
     <Container as='header' h='5rem' maxW='container.lg'>

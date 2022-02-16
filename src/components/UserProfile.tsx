@@ -1,9 +1,9 @@
-import { FormControl, FormLabel, Input, VStack } from '@chakra-ui/react';
-import { Box, Flex, Text } from '@chakra-ui/react';
-import { useAuth } from '@/hooks/useAuth';
+import { VStack } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
+import { useAppSelector } from '@/hooks/useAppSelector';
 
 export default function UserProfile() {
-  const { user } = useAuth();
+  const { user } = useAppSelector((state) => state.auth);
 
   return (
     <Box borderWidth='1px' borderRadius='lg' mt='4' p='3'>
@@ -12,7 +12,7 @@ export default function UserProfile() {
           <Text fontSize='sm' color='gray.500'>
             Your Username:{' '}
           </Text>
-          <Text textTransform='capitalize'>{user && user.displayName}</Text>
+          <Text textTransform='capitalize'>{user && user.name}</Text>
         </Box>
 
         <Box>

@@ -4,7 +4,7 @@ import { Box, Spinner, Heading, useToast, Text, Grid, GridItem } from '@chakra-u
 import { Center } from '@chakra-ui/react';
 
 import ListingCard from '@/components/ListingCard';
-import { Listing } from '@/utils/types';
+import { Listing } from '@/types/types';
 import { useActions } from '@/hooks/useActions';
 import { useAppSelector } from '@/hooks/useAppSelector';
 
