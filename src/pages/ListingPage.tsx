@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { Link as RouterLink, useParams } from 'react-router-dom';
-import { Box, Text, Link, Spinner, useToast, Center } from '@chakra-ui/react';
+import { Box, Text, Link, Spinner, useToast, Center, HStack } from '@chakra-ui/react';
 import { Heading, Divider, UnorderedList, ListItem, Badge, Button } from '@chakra-ui/react';
 
 import { useActions } from '@/hooks/useActions';
@@ -70,16 +70,18 @@ export default function ListingPage() {
           <Heading as='h3' fontSize='xl' mt={2}>
             {listing.location}
           </Heading>
-          <Badge colorScheme='green'>{listing.type}</Badge>
-          <Badge colorScheme='purple'>{listing.offer && listing.offer}</Badge>
-          <Badge>
-            ${listing.offer ? listing.price - listing?.discountedPrice! : null} Discount
-          </Badge>
+          <HStack spacing={4} mt={2}>
+            <Badge colorScheme='green'>{listing.type}</Badge>
+            <Badge colorScheme='purple'>{listing.offer && 'Has Offer'}</Badge>
+            <Badge>
+              ${listing.offer ? listing.price - listing?.discountedPrice! : null} Discount
+            </Badge>
+          </HStack>
           <Divider my={4} />
 
           {/* Details */}
           <Box>
-            <Heading as='h4' color='brand.primary' fontSize='2xl' mt={8}>
+            <Heading as='h4' color='primary' fontSize='2xl' mt={8}>
               Property Details
             </Heading>
             <UnorderedList>
@@ -88,7 +90,7 @@ export default function ListingPage() {
               </ListItem>
               <ListItem>Bathrooms: {listing.bathrooms}</ListItem>
               <ListItem>Bedrooms: {listing.bedrooms}</ListItem>
-              <ListItem>Parking Spot: {listing.parking ? 'Yes' : 'No'}</ListItem>
+              <ListItem>Parking Spot: {listing.parking ? listing.parking : 'No'}</ListItem>
               <ListItem>Is Furnished: {listing.furnished ? 'Yes' : 'No'}</ListItem>
             </UnorderedList>
             <Text></Text>
@@ -96,13 +98,13 @@ export default function ListingPage() {
           </Box>
 
           {/* Description */}
-          <Heading as='h3' color='brand.primary' fontSize='2xl' mt={6}>
+          <Heading as='h3' color='primary' fontSize='2xl' mt={6}>
             Property Description
           </Heading>
           <Box dangerouslySetInnerHTML={{ __html: listing.description }}></Box>
 
           {/* Map */}
-          <Heading as='h3' color='brand.primary' fontSize='2xl' mt={8}>
+          <Heading as='h3' color='primary' fontSize='2xl' mt={8}>
             Location
           </Heading>
           <Box h='20rem'>

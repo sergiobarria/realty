@@ -1,42 +1,33 @@
 import React from 'react';
 
-import { query, where, orderBy, limit, collection } from 'firebase/firestore';
-import { Box, Spinner, Heading, useToast, Flex, Text } from '@chakra-ui/react';
+import { Box, Spinner, Heading, useToast, Text, Grid, GridItem } from '@chakra-ui/react';
 import { Center } from '@chakra-ui/react';
 
-import { useCollection } from '@/hooks/useCollection';
 import ListingCard from '@/components/ListingCard';
 import { Listing } from '@/utils/types';
-import { db } from '@/firebase.config';
-
-interface ListingObj {
-  id: string;
-  data: Listing;
-}
+import { useActions } from '@/hooks/useActions';
+import { useAppSelector } from '@/hooks/useAppSelector';
 
 export default function OffersPage() {
+  const {
+    listingActions: { fetchListings },
+  } = useActions();
+  const { isLoading, isError, listings } = useAppSelector((state) => state.listing);
   const toast = useToast();
-  const q = query(
-    collection(db, 'listings'),
-    where('offer', '==', true),
-    orderBy('timestamp', 'desc'),
-    limit(10)
-  );
-  const { data, loading, error } = useCollection(q);
 
   React.useEffect(() => {
-    if (error) {
+    fetchListings('for-rent');
+  }, []);
+
+  React.useEffect(() => {
+    if (isError) {
       toast({
         title: 'Oops!, Something went wrong!',
         description: 'There was an error fetching listings. Please try again later.',
         status: 'error',
-        duration: 5000,
-        isClosable: true,
       });
     }
-  }, [error]);
-
-  console.log(data);
+  }, [isError]);
 
   return (
     <Box>
@@ -45,7 +36,7 @@ export default function OffersPage() {
           Offers
         </Heading>
       </Box>
-      {loading && (
+      {isLoading && (
         <Box h='10rem'>
           <Center h='full'>
             <Spinner size='xl' />
@@ -53,15 +44,19 @@ export default function OffersPage() {
         </Box>
       )}
 
-      {!loading && data?.length > 0 && (
-        <Flex flexWrap='wrap'>
-          {data.map((listing: ListingObj) => (
-            <ListingCard key={listing.id} listing={listing.data} id={listing.id} />
-          ))}
-        </Flex>
+      {!isLoading && listings?.length > 0 && (
+        <Grid templateColumns='repeat(3, 1fr)' gap={6} mb={8}>
+          {listings
+            .filter((listing: Listing) => listing.offer)
+            .map((listing: Listing) => (
+              <GridItem key={listing.uid} colSpan={[3, 2, 1]}>
+                <ListingCard listing={listing} />
+              </GridItem>
+            ))}
+        </Grid>
       )}
 
-      {!loading && data?.length === 0 && <Text>There are no current offers...</Text>}
+      {!isLoading && listings?.length === 0 && <Text>There are no current offers...</Text>}
     </Box>
   );
 }

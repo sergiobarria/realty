@@ -1,9 +1,11 @@
 import React from 'react';
 
 import { Link as RouterLink } from 'react-router-dom';
-import { Box, Text, Link, Image, Grid, GridItem } from '@chakra-ui/react';
+import { Text, Link, Image, Grid, GridItem, Heading, Box } from '@chakra-ui/react';
 
 import SlideShow from '@/components/SlideShow';
+import Features from '@/components/Features';
+import Testimonials from '@/components/Testimonials';
 
 export default function ExplorePage() {
   const sliderImages = ['/images/intro-bg.jpg', '/images/for-rent.jpg', '/images/for-sale.jpg'];
@@ -11,6 +13,17 @@ export default function ExplorePage() {
   return (
     <>
       <SlideShow images={sliderImages} />
+
+      <Box my={10} bg='gray.50' py={6}>
+        <Heading as='h2' textAlign='center'>
+          Our Service
+        </Heading>
+        <Features />
+      </Box>
+
+      <Heading as='h2' textAlign='center' mt={10}>
+        Choose a Category
+      </Heading>
       <Grid templateColumns='repeat(2, 1fr)' gap='6' maxW='container.md' mx='auto' my='8'>
         <GridItem mx='auto' colSpan={[2, 2, 1]}>
           <Link to='/category/for-sale' as={RouterLink}>
@@ -29,6 +42,11 @@ export default function ExplorePage() {
           </Link>
         </GridItem>
       </Grid>
+
+      {/* Testimonials */}
+      <Box my={8}>
+        <Testimonials />
+      </Box>
     </>
   );
 }

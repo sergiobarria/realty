@@ -35,7 +35,7 @@ const NumberInputField: React.FC<NumberInputFieldProps> = (props: NumberInputFie
         isInvalid={!!meta.error && meta.touched}
         {...numberInputProps}
       >
-        <ChakraNumberInputField name={name} />
+        <ChakraNumberInputField name={name} pattern='(-)?[0-9]*(.[0-9]+)?' />
         {showStepper && (
           <NumberInputStepper>
             <NumberIncrementStepper />

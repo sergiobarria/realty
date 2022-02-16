@@ -15,7 +15,7 @@ interface SlideShowProps {
 }
 
 export default function SlideShow({ images }: SlideShowProps) {
-  console.log(images);
+  // console.log(images);
   return (
     <Swiper
       slidesPerView={1}

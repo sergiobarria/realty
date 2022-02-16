@@ -14,7 +14,7 @@ export const fetchListings = createAsyncThunk(
       const q = query(
         collection(db, 'listings'),
         where('type', '==', category),
-        orderBy('timestamp', 'desc'),
+        // orderBy('timestamp', 'desc'),
         limit(10)
       );
 

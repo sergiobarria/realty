@@ -8,9 +8,11 @@ import { TextareaField } from './TextareaField';
 
 import { ListingFormInputs } from '@/types/FormTypes';
 import FileUpload from './FileUpload';
+import { useAppSelector } from '@/hooks/useAppSelector';
 
 export default function AddListingForm() {
   const { values, isSubmitting } = useFormikContext<ListingFormInputs>();
+  const { isLoading } = useAppSelector((state) => state.listing);
 
   return (
     <Form>
@@ -64,13 +66,13 @@ export default function AddListingForm() {
 
         <HStack>
           <NumberInputField
-            name='lat'
+            name='geolocation.lat'
             label='Latitude'
             showStepper
             numberInputProps={{ precision: 5, defaultValue: 0 }}
           />
           <NumberInputField
-            name='lng'
+            name='geolocation.lng'
             label='Longitude'
             showStepper
             numberInputProps={{ precision: 5, defaultValue: 0 }}
@@ -112,7 +114,7 @@ export default function AddListingForm() {
       <Button
         type='submit'
         bg='primary'
-        isLoading={isSubmitting}
+        isLoading={isLoading}
         textColor='white'
         _hover={{ textColor: 'primary', bg: 'gray.900' }}
         mt={8}

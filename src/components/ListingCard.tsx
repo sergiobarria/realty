@@ -8,16 +8,22 @@ import { MdSquareFoot } from 'react-icons/md';
 import { Listing } from '@/utils/types';
 
 interface ListingCardProps {
-  id: string;
+  // id: string;
   listing: Listing;
 }
 
-export default function ListingCard({ id, listing }: ListingCardProps) {
+export default function ListingCard({ listing }: ListingCardProps) {
   return (
-    <Link to={`/category/${listing.type}/${id}`} as={RouterLink} mx={{ base: 'auto', md: 0 }}>
-      <Box w='320px' border='1px' h='full' p='3' borderColor='gray.300' borderRadius='lg'>
+    <Link to={`/category/${listing.type}/${listing.uid}`} as={RouterLink}>
+      <Box border='1px' h='full' p='3' borderColor='gray.300' borderRadius='lg'>
         <Box>
-          <Image src={listing.imgUrls[0]} alt='listing cover' borderTopRadius='lg' />
+          <Image
+            src={listing.imgUrls[0] || listing.imgUrls[1]}
+            alt='listing cover'
+            borderTopRadius='lg'
+            w='full'
+            h='48'
+          />
         </Box>
 
         <Box mt='2'>
@@ -25,7 +31,7 @@ export default function ListingCard({ id, listing }: ListingCardProps) {
           <Text fontSize='lg' color='brand.primary'>
             {listing.name}
           </Text>
-          <Text color='brand.accent' fontWeight='semibold'>
+          <Text color='primary' fontWeight='semibold'>
             $
             {listing.offer
               ? listing.discountedPrice?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')

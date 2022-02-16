@@ -1,8 +1,8 @@
 import React from 'react';
 
 import AddListingForm from '@/components/AddListingForm';
-import { Container, Heading } from '@chakra-ui/react';
-import { Formik } from 'formik';
+import { Container, Heading, useToast } from '@chakra-ui/react';
+import { Formik, FormikHelpers } from 'formik';
 
 import { creatListingFormSchema } from '@/utils/formSchemas';
 import { ListingFormInputs } from '@/types/FormTypes';
@@ -13,6 +13,7 @@ export default function CreateListingPage() {
   const {
     listingActions: { createListing },
   } = useActions();
+  const toast = useToast();
   const { listingId } = useAppSelector((state) => state.listing);
   const initialValues: ListingFormInputs = {
     type: 'for-rent',
@@ -34,23 +35,30 @@ export default function CreateListingPage() {
   };
 
   React.useEffect(() => {
-    if (listingId) console.log(listingId);
+    if (listingId) {
+      toast({
+        title: 'Success!',
+        description: 'New listing created!',
+        status: 'success',
+      });
+    }
   }, [listingId]);
 
-  function addListingHandler(values: ListingFormInputs) {
+  function addListingHandler(values: ListingFormInputs, actions: FormikHelpers<ListingFormInputs>) {
     console.log(values);
 
     createListing(values);
+    actions.resetForm();
   }
   return (
     <Container maxW='30rem' my='10'>
-      <Heading as='h1' color='brand.primary' mb='2rem'>
+      <Heading as='h1' color='primary' mb='2rem'>
         Add a New Listing
       </Heading>
       <Formik
         initialValues={initialValues}
         onSubmit={addListingHandler}
-        validationSchema={creatListingFormSchema}
+        // validationSchema={creatListingFormSchema}
       >
         <AddListingForm />
       </Formik>

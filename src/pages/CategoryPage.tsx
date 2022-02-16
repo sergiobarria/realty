@@ -1,18 +1,13 @@
 import React from 'react';
 
 import { useParams } from 'react-router-dom';
-import { Box, Spinner, Heading, useToast, Flex } from '@chakra-ui/react';
+import { Box, Spinner, Heading, useToast, Grid, GridItem } from '@chakra-ui/react';
 import { Center } from '@chakra-ui/react';
 
 import { useActions } from '@/hooks/useActions';
 import { useAppSelector } from '@/hooks/useAppSelector';
 import { Listing } from '@/utils/types';
 import ListingCard from '@/components/ListingCard';
-
-interface ListingObj {
-  id: string;
-  data: Listing;
-}
 
 export default function CategoryPage() {
   const params = useParams();
@@ -25,6 +20,7 @@ export default function CategoryPage() {
   React.useEffect(() => {
     if (params?.categoryName) {
       fetchListings(params?.categoryName);
+      console.log(listings);
     }
   }, [params?.categoryName]);
 
@@ -54,15 +50,19 @@ export default function CategoryPage() {
       )}
 
       {!isLoading && listings?.length > 0 && (
-        <Flex flexWrap='wrap' gap={6}>
+        <Grid templateColumns='repeat(3, 1fr)' gap={6} mb={8}>
           {listings.map((listing: Listing) => (
-            <ListingCard key={listing.uid} listing={listing} id={listing.uid} />
+            <GridItem key={listing.uid} colSpan={[3, 2, 1]}>
+              <ListingCard listing={listing} />
+            </GridItem>
           ))}
-        </Flex>
+        </Grid>
       )}
 
       {!isLoading && listings?.length === 0 && (
-        <Heading as='h3'>There are not available listings for sale</Heading>
+        <Heading as='h3' fontSize='xl' fontWeight='medium'>
+          There are not available listings for sale...
+        </Heading>
       )}
     </Box>
   );

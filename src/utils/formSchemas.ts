@@ -24,6 +24,8 @@ export const creatListingFormSchema = yup.object().shape({
   parking: yup.number().min(0).required('Number of parking spots is required'),
   furnished: yup.boolean().required('Add if the property is furnished'),
   location: yup.string().required('Add property address'),
+  lat: yup.number().required('Latitud required'),
+  lng: yup.number().required('Longitude required'),
   description: yup.string().required('Add property description'),
   price: yup.number().min(1).required('Add property price in USD'),
   offer: yup.boolean().required().default(false),
