@@ -42,14 +42,14 @@ export default function SimpleThreeColumns() {
         />
         <Feature
           icon={<Icon as={FcDonate} w={10} h={10} />}
-          title={'Unlimited Donations'}
+          title={'Save Money'}
           text={
             'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore...'
           }
         />
         <Feature
           icon={<Icon as={FcInTransit} w={10} h={10} />}
-          title={'Instant Delivery'}
+          title={'Fast Process'}
           text={
             'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore...'
           }

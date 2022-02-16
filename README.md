@@ -36,3 +36,5 @@ Real estate website for searching properties available for rent or sell. Built u
 
 
 ## Screenshots
+
+![project-image](https://res.cloudinary.com/sbarria-dev/image/upload/v1644972977/sergiobarria/projects/1644972966419_a68rwo.png)
